@@ -41,6 +41,7 @@ Route::post('/login', function(Request $request){
 
     $credentials = $request->only(['email', 'password']);
 
+    // attempt works even tho it says undefined
     $token = auth('api')->attempt($credentials);
 
     return $token;
