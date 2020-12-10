@@ -44,6 +44,10 @@ Route::post('/login', function(Request $request){
     // attempt works even tho it says undefined
     $token = auth('api')->attempt($credentials);
 
+    if(!$token){
+       abort(404, 'Invalid Credentials'); 
+    }
+
     return $token;
 
 });
