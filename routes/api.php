@@ -18,10 +18,11 @@ use Illuminate\Support\Facades\Auth;
 */
 
 // php artisan serve --host 192.168.2.92 --port 80
+
 Route::resource('products', ProductsController::class);
 Route::resource('users', UserController::class);
 
-// Route::resource('users', UserController::class);
+
 
 
 Route::middleware('auth')->get('/user', function (Request $request) {
@@ -30,7 +31,7 @@ Route::middleware('auth')->get('/user', function (Request $request) {
 
 
 // create a user
-Route::post('/user-create', function(Request $request, $id){
+Route::post('/user-create', function(Request $request){
     App\Models\User::create([
         'name' => $request['name'],
         'email' => $request['email'],
@@ -47,7 +48,7 @@ Route::put('/user-update/{id}', function(Request $request, $id){
 
 });
 
-// login a suer
+// login a user
 Route::post('/login', function(Request $request){
 
     $credentials = $request->only(['email', 'password']);
