@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Purchase;
 use App\Models\Product;
 
-class ProductsController extends Controller
+class PurchasesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +15,8 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        // get all products
-        return Product::all();
+         // get all purchases
+         return Purchase::all();
     }
 
     /**
@@ -26,15 +27,15 @@ class ProductsController extends Controller
      */
     public function store(Request $request)
     {
-        // validate product
-        $request->validate([
-            'name' => 'required',
-            'price' => 'required',
-            'description' => 'required'
+         // validate purchase
+         $request->validate([
+            'userId' => 'required',
+            'productId' => 'required',
+         
         ]);
 
-        // create a product
-        return Product::create($request->all());
+        // create a purchase
+        return Purchase::create($request->all());
     }
 
     /**
@@ -43,16 +44,29 @@ class ProductsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
+
+    // show all purchases for a specific userid
     public function show($id)
     {
-        // show a product
-        return Product::find($id);
+          $purchases = Purchase::where('userId', $id)->get();
+
+          $productIds = array();
+          for ($i=0; $i < count($purchases); $i++) { 
+              array_push($productIds, $purchases[$i]->productId);
+          }
+          return Product::whereIn('id', $productIds)->get();
     }
 
-    public function where($ids) {
-        // show all products for a specific ids
-                
-        return Product::whereIn('id', array($ids))->get();
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
     }
 
     /**
@@ -64,11 +78,7 @@ class ProductsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // update a product
-        $product = Product::find($id);
-        $product->update($request->all());
-
-        return $product;
+        //
     }
 
     /**
@@ -79,7 +89,7 @@ class ProductsController extends Controller
      */
     public function destroy($id)
     {
-        // delete a product
-        return Product::destroy($id);
+     // delete a purchase
+     return Purchase::destroy($id);
     }
 }

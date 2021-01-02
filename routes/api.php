@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\PurchasesController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -24,7 +25,10 @@ Route::middleware('auth')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+// route for purchases controller
+Route::resource('purchases', purchasesController::class);
 // route for product controller
+Route::get('products/where/{ids}', [ProductsController::class, 'where']);
 Route::resource('products', ProductsController::class);
 // route for user controller
 Route::resource('users', UserController::class);
