@@ -55,7 +55,15 @@ class PurchasesController extends Controller
           for ($i=0; $i < count($purchases); $i++) { 
               array_push($productIds, $purchases[$i]->productId);
           }
-          return Product::whereIn('id', $productIds)->get();
+          $result = Product::whereIn('id', function ($query){
+              $query->select('id')->from('products')->groupBy('id')->havingRaw('count(*) > 1');
+          })->get();
+        //   return $result;
+       
+          $arrayCount = array_count_values($productIds);
+          $result = Product::whereIn('id', $productIds)->get();
+
+          return [$arrayCount, $result];
     }
 
     /**
